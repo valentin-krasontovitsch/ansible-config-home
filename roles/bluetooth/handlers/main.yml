@@ -1,6 +1,0 @@
----
-- name: restart bluetooth service
-  systemd:
-    daemon-reload: yes
-    name: bluetooth
-    state: restarted
