@@ -1,7 +1,9 @@
 ---
-
-- Disable SAP as it gives an error message
+- name: disable SAP as it gives an error message
   lineinfile:
     insertafter: [Service]
     regexp: ^ExecStart
     line: ExecStart=/usr/lib/bluetooth/bluetoothd --noplugin=sap
+    path: /etc/systemd/system/bluetooth.target.wants/bluetooth.service
+  notify:
+    - restart bluetooth service
