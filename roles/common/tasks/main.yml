@@ -1,0 +1,79 @@
+---
+- name: Make sure htop is installed
+  apt: pkg=htop state=installed
+
+- name: Install git
+  apt:
+    name: git
+  tags:
+    - git
+
+- name: Install fish
+  apt:
+    name: fish
+  tags:
+    - fish
+
+- name: Install tree
+  apt: pkg=tree state=installed
+
+- name: Install screen
+  apt:
+    name: screen
+  tags:
+    - screen
+
+- name: install jq
+  apt:
+    name: jq
+
+- include: pip.yml
+  tags:
+    - pip
+
+- name: Add wget
+  apt: pkg=wget state=installed
+
+- user:
+    name=val
+    groups=adm,sudo
+    append=yes
+    generate_ssh_key=yes
+    ssh_key_bits=2048
+    ssh_key_file=.ssh/id_rsa
+    shell=/usr/bin/fish
+    password=$6$9/wKN0wpSk.TQi$syKdFMSR6OqSy8R31.X/k8.JaBR22xUKa/92.uthEIkGye3n.h2R2A0Lgp16aPUCOvh0e3.uKiZCpAO8ATRdd0
+    update_password=on_create
+  tags:
+    - val
+
+- user:
+    name=naz
+    groups=adm,sudo
+    append=yes
+    generate_ssh_key=yes
+    ssh_key_bits=2048
+    ssh_key_file=.ssh/id_rsa
+    shell=/usr/bin/fish
+    password=$6$YyxoRYvfTzlTW60$5.HZYF3SagSoXyu.SH9GMQ4UdYLAeZMbwnfLkwB7/nEQKiNWaTejH1WioTg34vB0TTHT9QyZNXpzP94LlNlhd0
+    update_password=on_create
+  tags:
+    - naz
+
+- name: Paste vals .screenrc
+  copy:
+    src: "val-screenrc"
+    dest: "/home/{{ item.name }}/.screenrc"
+    mode: 0644
+    owner: "{{ item.name }}"
+    group: "{{ item.name }}"
+  with_items:
+    - { name: val }
+    - { name: naz }
+  tags:
+    - screen
+
+- include: vim.yml
+  tags:
+    - vim
+

@@ -1,0 +1,22 @@
+---
+- name: Install glide ppa
+  apt_repository:
+    repo: 'ppa:masterminds/glide'
+
+- name: Install glide
+  apt:
+    name: glide
+    state: latest
+    update_cache: yes
+    cache_valid_time: 600
+
+- name: Install go 1.8 ppa
+  apt_repository:
+    repo: 'ppa:longsleep/golang-backports'
+
+- name: Install go 1.8
+  apt:
+    name: golang-go
+    state: latest
+    update_cache: yes
+

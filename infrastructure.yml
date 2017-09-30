@@ -1,0 +1,14 @@
+---
+- hosts: all
+  roles:
+    - { role: common, tags: [common] }
+      #- { role: docker_host, tags: [docker_host,setup] }
+
+- hosts: pies
+  roles:
+    - { role: save_energy, tags: [optimize] }
+    - { role: bluetooth, tags: [bluetooth] }
+
+- hosts: headless_pies
+  roles:
+    - { role: optimize_headless_pies, tags: [optimize] }

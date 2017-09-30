@@ -1,0 +1,8 @@
+[laptops]
+val-laptop ansible_connection=local
+
+[pies]
+raspberrypi.local ansible_user=pi
+
+[headless_pies]
+raspberrypi.local ansible_user=pi

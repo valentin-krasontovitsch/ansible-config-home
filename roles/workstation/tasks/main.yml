@@ -1,0 +1,17 @@
+---
+- name: add ansible repository
+  apt_repository:
+    repo: "ppa:ansible/ansible"
+  tags:
+    - ansible
+
+- name: install ansible
+  apt:
+    name: ansible
+    update_cache: yes
+
+- include: bonfire.yml
+  tags:
+    - bonfire
+
+- include: go.yml

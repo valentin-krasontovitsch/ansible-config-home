@@ -1,0 +1,13 @@
+---
+- name: reduce gpu memory
+  lineinfile:
+    path: /boot/config.txt
+    regexp: gpu_mem
+    line: gpu_mem=16
+
+- name: power off hdmi
+  lineinfile:
+    path: /etc/rc.local
+    line: /usr/bin/tvservice -o
+    regexp: /usr/bin/tvservice -o
+    insertbefore: exit 0

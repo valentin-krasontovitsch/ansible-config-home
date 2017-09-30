@@ -1,0 +1,26 @@
+# We must install pip via apt before we can use the pip module below
+- name: Ensure pip's dependencies are installed
+  apt:
+    name: "{{ item }}"
+    update_cache: yes
+    cache_valid_time: 600
+  with_items:
+    - python-pip
+    - python-dev
+    - libffi-dev
+    - libssl-dev
+    - libxml2-dev
+    - libxslt1-dev
+    - libjpeg8-dev 
+    - zlib1g-dev
+
+# Upgrade pip with pip to fix angstwad/docker.ubuntu/pull/35 and docker-py/issues/525
+- name: Upgrade latest pip, setuptools, and docker-py with pip
+  pip:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - pip
+    - setuptools
+    - docker-py
+    - python-consul
