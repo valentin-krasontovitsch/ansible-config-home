@@ -62,7 +62,7 @@
 
 - name: Paste vals .screenrc
   copy:
-    src: "val-screenrc"
+    src: "screenrc"
     dest: "/home/{{ item.name }}/.screenrc"
     mode: 0644
     owner: "{{ item.name }}"
@@ -72,6 +72,7 @@
     - { name: naz }
   tags:
     - screen
+    - screenrc
 
 - include: vim.yml
   tags:

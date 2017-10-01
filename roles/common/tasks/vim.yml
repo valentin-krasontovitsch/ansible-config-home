@@ -4,13 +4,14 @@
 
 - name: Paste vals .vimrc
   copy:
-    src: "val-ubuntu-vimrc"
+    src: "vimrc"
     dest: "/home/{{ user | default('val') }}/.vimrc"
     mode: 0644
     owner: "{{ user | default('val') }}"
     group: "{{ user | default('val') }}"
   tags:
     - val
+    - vimrc
   register: paste_vimrc
 
 # TODO the above is not idempotent - either fix, or wait until old ubuntus are
