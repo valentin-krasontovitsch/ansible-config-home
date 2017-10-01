@@ -40,3 +40,4 @@
     insertafter: [Policy]
     line: AutoEnable=true
     path: /etc/bluetooth/main.conf
+  # TODO look into ReconnectUUIDs in that section!
