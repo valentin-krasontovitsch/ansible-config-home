@@ -14,7 +14,8 @@ bind b focus bottom
 startup_message off
 hardstatus alwayslastline
 
-hardstatus string "%{= KW}GNU screen | Host: %H | Session: %S | Window: %n - %h %= %D, %d %M %Y | %C:%s"
+hardstatus string "%{= KW}GNU screen | %H | %S | %n - %h %= %D, %d %M %Y | %C:%s"
+#hardstatus string "%{= KW}GNU screen | Host: %H | Session: %S | Window: %n - %h %= %D, %d %M %Y | %C:%s"
 
 
 screen
