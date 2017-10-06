@@ -42,3 +42,14 @@
     line: AutoEnable=true
     path: /etc/bluetooth/main.conf
   # TODO look into ReconnectUUIDs in that section!
+
+# TODO pair with speaker using ansible (possible?)
+# TODO make bluetoothctl runable without sudo for user (who?)
+#
+
+- name: enable audio
+  copy:
+    src: files/audio.conf
+    dest: /etc/bluetooth/audio.conf
+    owner: root
+    group: root
