@@ -35,6 +35,21 @@
   local_action: wait_for host={{ ansible_ssh_host }} state=started port=22 delay=90 timeout=180
   when: install_pa.changed
 
+- name: copy pulseaudio service file
+  copy:
+    src: files/pulseaudio.service
+    dest: /etc/systemd/system/pulseaudio.service
+    owner: root
+    group: root
+  register: pulseaudio_service
+
+- name: enable pulseaudio service
+  service:
+    state: restarted
+    name: pulseaudio
+    daemon-reload: yes
+  when: pulseaudio_service.changed
+
 - name: enable controllers by default
   lineinfile:
     regexp: AutoEnable
