@@ -1,18 +1,19 @@
 ---
-- name: disable SAP as it gives an error message
-  lineinfile:
-    insertafter: [Service]
-    regexp: ^ExecStart
-    line: ExecStart=/usr/lib/bluetooth/bluetoothd --noplugin=sap
-    path: /etc/systemd/system/bluetooth.target.wants/bluetooth.service
-  register: disable_sap
-
-- name: restart bluetooth service
-  systemd:
-    daemon-reload: yes
-    name: bluetooth
-    state: restarted
-  when: disable_sap.changed
+## turns out this is unnecessary
+#- name: disable SAP as it gives an error message
+#  lineinfile:
+#    insertafter: [Service]
+#    regexp: ^ExecStart
+#    line: ExecStart=/usr/lib/bluetooth/bluetoothd --noplugin=sap
+#    path: /etc/systemd/system/bluetooth.target.wants/bluetooth.service
+#  register: disable_sap
+#
+#- name: restart bluetooth service
+#  systemd:
+#    daemon-reload: yes
+#    name: bluetooth
+#    state: restarted
+#  when: disable_sap.changed
 
 - name: install pulse-audio and deps
   apt:
