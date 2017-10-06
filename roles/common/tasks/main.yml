@@ -34,7 +34,8 @@
 - name: Add wget
   apt: pkg=wget state=installed
 
-- user:
+- name: Setup user account for val
+  user:
     name=val
     groups=adm,sudo
     append=yes
@@ -46,8 +47,10 @@
     update_password=on_create
   tags:
     - val
+    - users
 
-- user:
+- name: Setup user account for naz
+  user:
     name=naz
     groups=adm,sudo
     append=yes
@@ -59,6 +62,7 @@
     update_password=on_create
   tags:
     - naz
+    - users
 
 - name: Paste vals .screenrc
   copy:
