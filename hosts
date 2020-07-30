@@ -2,7 +2,13 @@
 val-laptop ansible_connection=local
 
 [pies]
-raspberrypi.local ansible_user=pi
+beemanager.local # raspberry pi zero w
+homemanager.local # raspberry pi 3b+
+raspberrypi.local # tore's pi
 
 [headless_pies]
-raspberrypi.local ansible_user=pi
+beemanager.local
+homemanager.local
+
+[dmz]
+beemanager.local

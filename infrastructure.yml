@@ -7,8 +7,62 @@
 - hosts: pies
   roles:
     - { role: save_energy, tags: [optimize] }
+
+- hosts: homemanager
+  roles:
     - { role: bluetooth, tags: [bluetooth] }
 
 - hosts: headless_pies
   roles:
     - { role: optimize_headless_pies, tags: [optimize] }
+
+- hosts: dmz
+  roles:
+    - { role: ssh }
+  tags: ssh
+
+      # - hosts: dmz
+      #   tasks:
+      #     - name: install tor
+      #       apt:
+      #         name:
+      #           - tor
+      #           - obfs4proxy
+      #     - name: setup tor service
+      #       debug:
+      #         msg: TODO necessary?
+      #     - name: configure tor /etc/tor/torrc
+      #       debug:
+      #         msg: TODO set limits, bridge, exit policy, ports, ...
+      #     - name: setup ssh
+      #       debug:
+      #         msg: |
+      #           TODO configure sshd config - no challenge, no passphrase, something
+      #           with pam?, which user names are admissible, exception for
+      #           naz-gaming-laptop group, portforward for naz-gaming-laptop?
+      #         msg: TODO setup authorized_keys files for all users
+      #         msg: TODO setup naz-gaming-laptop user account
+      #         msg: TODO configure pam in /etc/??
+      #         msg: TODO have to maybe just touch a file in the users' home folder?
+      #         msg: TODO install docker
+      #     - name: setup traefik config - TODO write all services into traefik conf - dashboard, radio
+      #           frontend, jupyter,
+      #     - name: deploy traefik - TODO use docker, get config from gitlab project
+      #     - name: deploy radio-control frontend
+      #     - name: setup openvpn... oh my
+      #     - name: cronjob for registering ip for domain
+      #     - name: setup dnsmasq with securedns / dnssec ?!, and blocking of stuff in hosts file
+      #     - name: setup fund prices tracking
+      #
+      # - hosts: climate
+      #   tasks:
+      #     - name: enable i2c part 1
+      # make sure line `dtparam=i2c_arm=on` is in `/boot/config.txt`
+      # make sure line `i2c-dev` is at bottom of `/etc/modules`
+      # install i2c-tools and python-smbus
+      # install with pip adafruit-circuitpython-am2320
+      # if device is connected, run `i2cdetect -y 1` twice and expect some
+      # non-hyphen output (only if you feel like it)
+      # install binary/script in /usr/local/bin with right rights and owner
+      # create logs dir
+      # setup line in crontab (file?)

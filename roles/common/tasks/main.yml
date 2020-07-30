@@ -1,64 +1,29 @@
 ---
-- name: Make sure htop is installed
-  apt: pkg=htop state=installed
-
-- name: Install git
+- name: Install basic toolsgit
   apt:
-    name: git
-  tags:
+    name:
+    - htop
     - git
-
-- name: Install fish
-  apt:
-    name: fish
-  tags:
     - fish
-
-- name: Install tree
-  apt: pkg=tree state=installed
-
-- name: Install screen
-  apt:
-    name: screen
-  tags:
+    - tree
+    - lsof
     - screen
+    - jq
+    - python3
+    - python3-pip
+    - wget
+    - vim
 
-- name: install jq
-  apt:
-    name: jq
-
-- include: pip.yml
-  tags:
-    - pip
-
-- name: Add wget
-  apt: pkg=wget state=installed
-
-- user:
-    name=val
-    groups=adm,sudo
-    append=yes
-    generate_ssh_key=yes
-    ssh_key_bits=2048
-    ssh_key_file=.ssh/id_rsa
-    shell=/usr/bin/fish
-    password=$6$9/wKN0wpSk.TQi$syKdFMSR6OqSy8R31.X/k8.JaBR22xUKa/92.uthEIkGye3n.h2R2A0Lgp16aPUCOvh0e3.uKiZCpAO8ATRdd0
-    update_password=on_create
+- name: Paste vals .vimrc
+  copy:
+    src: "val-ubuntu-vimrc"
+    dest: "/home/{{ user | default('val') }}/.vimrc"
+    mode: 0644
+    owner: "{{ user | default('val') }}"
+    group: "{{ user | default('val') }}"
   tags:
     - val
-
-- user:
-    name=naz
-    groups=adm,sudo
-    append=yes
-    generate_ssh_key=yes
-    ssh_key_bits=2048
-    ssh_key_file=.ssh/id_rsa
-    shell=/usr/bin/fish
-    password=$6$YyxoRYvfTzlTW60$5.HZYF3SagSoXyu.SH9GMQ4UdYLAeZMbwnfLkwB7/nEQKiNWaTejH1WioTg34vB0TTHT9QyZNXpzP94LlNlhd0
-    update_password=on_create
-  tags:
-    - naz
+  register: paste_vimrc
 
 - name: Paste vals .screenrc
   copy:
@@ -73,7 +38,15 @@
   tags:
     - screen
 
-- include: vim.yml
+- user:
+    name: val
+    groups: adm,sudo
+    append: yes
+    generate_ssh_key: yes
+    ssh_key_bits: 2048
+    ssh_key_file: .ssh/id_rsa
+    shell: /usr/bin/fish
+    password: $6$9/wKN0wpSk.TQi$syKdFMSR6OqSy8R31.X/k8.JaBR22xUKa/92.uthEIkGye3n.h2R2A0Lgp16aPUCOvh0e3.uKiZCpAO8ATRdd0
+    update_password: on_create
   tags:
-    - vim
-
+    - users

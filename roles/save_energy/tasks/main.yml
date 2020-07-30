@@ -7,3 +7,11 @@
   with_items:
     - { regex: dtparam=act_led_trigger=, line: dtparam=act_led_trigger=none }
     - { regex: dtparam=act_led_activelow=, line: dtparam=act_led_activelow=on }
+
+# another way of disabling also the power led (newer pis) is adding the
+# following lines to `/etc/rc.local`:
+#
+# sudo sh -c 'echo none > /sys/class/leds/led0/trigger'
+# sudo sh -c 'echo none > /sys/class/leds/led1/trigger'
+# sudo sh -c 'echo 0 > /sys/class/leds/led0/brightness'
+# sudo sh -c 'echo 0 > /sys/class/leds/led1/brightness'
