@@ -1,0 +1,15 @@
+[Unit]
+Description=PulseAudio Server
+After=avahi-daemon.service network.target
+Before=bluetooth.target
+
+[Service]
+ExecStart=/usr/bin/pulseaudio --start -v --daemonize=false
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=on-failure
+User=pulse
+Type=forking
+RestartSec=20
+
+[Install]
+WantedBy=multi-user.target

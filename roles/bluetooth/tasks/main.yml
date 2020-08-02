@@ -1,9 +1,47 @@
 ---
-- name: disable SAP as it gives an error message
+- name: store audio pro speaker address in environment
   lineinfile:
-    insertafter: [Service]
-    regexp: ^ExecStart
-    line: ExecStart=/usr/lib/bluetooth/bluetoothd --noplugin=sap
-    path: /etc/systemd/system/bluetooth.target.wants/bluetooth.service
+    dest: /etc/environment
+    line: t5=40:EF:4C:1D:37:F0
+
+- name: install necessary packages
+  apt:
+    name:
+    - pulseaudio
+    - pulseaudio-module-bluetooth
+    - pavucontrol
+    - bluez-firmware
+    - mplayer
+
+- name: put pulse audio service unit file in place
+  copy:
+    src: files/pulseaudio.service
+    dest: /etc/systemd/system/pulseaudio.service
   notify:
-    - restart bluetooth service
+    - restart pulseaudio
+
+# TODO we still have to run `sudo pulseaudio -v --daemonize=false --system`
+# once for some folders to get created in /run before this works : /
+
+- name: enable and start pulseaudio service
+  systemd:
+    name: pulseaudio
+    enabled: true
+    daemon_reload: true
+    state: started
+  notify:
+    - restart bluetooth
+
+# TODO need to configure audio somehow to be able to control volume - or change
+# script to control master, seems to work fine too
+# sudo amixer -q sset 'Master' 10%
+
+# TODO find out if this is still relevant
+#- name: disable SAP as it gives an error message
+#  lineinfile:
+#    insertafter: [Service]
+#    regexp: ^ExecStart
+#    line: ExecStart=/usr/lib/bluetooth/bluetoothd --noplugin=sap
+#    path: /etc/systemd/system/bluetooth.target.wants/bluetooth.service
+#  notify:
+#    - restart bluetooth service
