@@ -11,3 +11,6 @@ home-manager.local
 
 [dmz]
 radio-alarm.local
+
+[radio]
+radio-alarm.local

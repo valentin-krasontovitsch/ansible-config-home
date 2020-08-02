@@ -14,7 +14,7 @@
   roles:
     - { role: save_energy, tags: [optimize] }
 
-- hosts: homemanager
+- hosts: radio
   roles:
     - { role: bluetooth, tags: [bluetooth] }
 
