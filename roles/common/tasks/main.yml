@@ -13,6 +13,7 @@
     - python3-pip
     - wget
     - vim
+  tags: basic-tools
 
 - name: Install omf
   become: item.name
@@ -28,6 +29,7 @@
   failed_when: omf_install.rc != 0 and 'Existing installation detected' not in
     omf_install.stdout
   loop: "{{ users }}"
+  tags: omf
 
 - name: Choose theme
   become: item.name
@@ -36,6 +38,7 @@
     cmd: omf install red-snapper
   changed_when: false
   loop: "{{ users }}"
+  tags: omf
 
 - name: Paste vals .vimrc
   copy:
@@ -45,6 +48,10 @@
     owner: "{{ user | default('val') }}"
     group: "{{ user | default('val') }}"
   when: "'pies' in group_names"
+  tags: vimrc
+
+  # TODO need to install vundle or whatever plugin manager we use for our vimrc
+  # to work!
 
 - name: Paste vals .screenrc
   copy:
@@ -54,3 +61,4 @@
     owner: "{{ item.name }}"
     group: "{{ item.name }}"
   loop: "{{ users }}"
+  tags: screenrc
