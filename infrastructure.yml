@@ -7,20 +7,23 @@
 
 - hosts: all
   roles:
-    - { role: common, tags: [common] }
-      #- { role: docker_host, tags: [docker_host,setup] }
+    - { role: common }
+  tags: common
 
 - hosts: pies
   roles:
-    - { role: save_energy, tags: [optimize] }
+    - { role: save_energy }
+  tags: optimize
 
 - hosts: radio
   roles:
-    - { role: bluetooth, tags: [bluetooth] }
+    - { role: bluetooth }
+  tags: bluetooth
 
 - hosts: headless_pies
   roles:
-    - { role: optimize_headless_pies, tags: [optimize] }
+    - { role: optimize_headless_pies }
+  tags: optimize
 
 - hosts: dmz
   roles:
