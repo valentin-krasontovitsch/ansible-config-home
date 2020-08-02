@@ -14,6 +14,29 @@
     - wget
     - vim
 
+- name: Install omf
+  become: item.name
+  shell:
+    executable: /usr/bin/fish
+    cmd: |
+      curl -Ls https://get.oh-my.fish -o /tmp/omf.fish && \
+      fish /tmp/omf.fish --noninteractive
+    warn: false
+  register: omf_install
+  changed_when: "'Existing installation detected' not in
+    omf_install.stdout"
+  failed_when: omf_install.rc != 0 and 'Existing installation detected' not in
+    omf_install.stdout
+  loop: "{{ users }}"
+
+- name: Choose theme
+  become: item.name
+  shell:
+    executable: /usr/bin/fish
+    cmd: omf install red-snapper
+  changed_when: false
+  loop: "{{ users }}"
+
 - name: Paste vals .vimrc
   copy:
     src: "val-ubuntu-vimrc"
