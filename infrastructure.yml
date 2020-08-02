@@ -12,7 +12,7 @@
 
 - hosts: pies
   roles:
-    - { role: save_energy }
+    - { role: disable-leds, tags: [disable-leds] }
   tags: optimize
 
 - hosts: radio
