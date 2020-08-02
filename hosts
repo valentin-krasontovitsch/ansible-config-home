@@ -5,7 +5,7 @@ val-laptop ansible_connection=local
 radio-alarm.local # raspberry pi zero w
 home-manager.local # raspberry pi 3b+
 
-[headless_pies]
+[headless-pies]
 radio-alarm.local
 home-manager.local
 
