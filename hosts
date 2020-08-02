@@ -2,13 +2,12 @@
 val-laptop ansible_connection=local
 
 [pies]
-beemanager.local # raspberry pi zero w
-homemanager.local # raspberry pi 3b+
-raspberrypi.local # tore's pi
+radio-alarm.local # raspberry pi zero w
+home-manager.local # raspberry pi 3b+
 
 [headless_pies]
-beemanager.local
-homemanager.local
+radio-alarm.local
+home-manager.local
 
 [dmz]
-beemanager.local
+radio-alarm.local
