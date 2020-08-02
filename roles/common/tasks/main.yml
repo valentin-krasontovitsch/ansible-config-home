@@ -52,6 +52,14 @@
 
   # TODO need to install vundle or whatever plugin manager we use for our vimrc
   # to work!
+  #
+- name: configure system vim settings
+  blockinfile:
+    dest: /etc/vim/vimrc
+    block: |
+      set noswapfile
+      set mouse-=a
+  tags: vimrc
 
 - name: Paste vals .screenrc
   copy:
