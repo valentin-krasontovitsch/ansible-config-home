@@ -62,3 +62,9 @@
     group: "{{ item.name }}"
   loop: "{{ users }}"
   tags: screenrc
+
+- name: Set time zone
+  lineinfile:
+    dest: /etc/environment
+    line: TZ=Europe/Oslo
+  tags: timezone
