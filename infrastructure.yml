@@ -20,7 +20,7 @@
     - { role: bluetooth }
   tags: bluetooth
 
-- hosts: headless-pies
+- hosts: headless_pies
   roles:
     - { role: optimize-headless-pies }
   tags: optimize
