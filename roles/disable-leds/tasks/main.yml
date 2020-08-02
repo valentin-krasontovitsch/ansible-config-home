@@ -4,14 +4,32 @@
     path: /boot/config.txt
     regexp: "{{ item.regex }}"
     line: "{{ item.line }}"
+  register: act_led
   with_items:
     - { regex: dtparam=act_led_trigger=, line: dtparam=act_led_trigger=none }
     - { regex: dtparam=act_led_activelow=, line: dtparam=act_led_activelow=on }
 
-# another way of disabling also the power led (newer pis) is adding the
-# following lines to `/etc/rc.local`:
-#
-# sudo sh -c 'echo none > /sys/class/leds/led0/trigger'
-# sudo sh -c 'echo none > /sys/class/leds/led1/trigger'
-# sudo sh -c 'echo 0 > /sys/class/leds/led0/brightness'
-# sudo sh -c 'echo 0 > /sys/class/leds/led1/brightness'
+- set_fact:
+    act_led_changed: "{{(act_led.results | map(attribute='changed') | list) is
+      any}}"
+
+- debug:
+    var: act_led_changed
+
+- name: disable red led
+  blockinfile:
+    path: /etc/rc.local
+    block: |
+      sudo sh -c 'echo none > /sys/class/leds/led0/trigger'
+      sudo sh -c 'echo none > /sys/class/leds/led1/trigger'
+      sudo sh -c 'echo 0 > /sys/class/leds/led0/brightness'
+      sudo sh -c 'echo 0 > /sys/class/leds/led1/brightness'
+  register: red_led
+  when: "'pie_with_red_led' in group_names"
+
+- name: restart hosts
+  reboot:
+  when: act_led_changed or (red_led is defined and red_led.changed)
+
+# TODO the above red led fix is not persistent / does not work.
+# I believe I got it to work before, but I don't remember how : /
