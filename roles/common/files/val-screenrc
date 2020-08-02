@@ -11,6 +11,8 @@ bind t focus top
 bind b focus bottom
 
 term screen-256color
+defutf8 on
+defencoding utf8
 
 startup_message off
 hardstatus alwayslastline
