@@ -1,0 +1,44 @@
+- name: do the prelim setup
+  block:
+  - name: install fish as that's our favourite shell
+    apt:
+      name: fish
+  - name: setup val user
+    user:
+      name: val
+      groups: adm,sudo
+      append: yes
+      generate_ssh_key: yes
+      ssh_key_bits: 2048
+      ssh_key_file: .ssh/id_rsa
+      shell: /usr/bin/fish
+      password: "$6$DGNSSPV0Vq$JHBYIH03r67ySoXjDIdLlasLIlwBem.dhhdZmlFavGABI5Y\
+                 xB3ABd2v4SjVvwuM9T/hMhfoKuhufkF2sDqNyO/"
+
+  - name: copy authorized_keys file
+    copy:
+      dest: /home/val/.ssh/authorized_keys
+      owner: val
+      group: val
+      mode: 0600
+      src: files/val_authorized_keys
+
+  - name: change pi's password
+    user:
+      name: pi
+      password: "$6$4FaCxq82/$/OpBqNf.tZQLnIA25.jv4cxv70UlpuRk78oOiYNBuO3L\
+                 vam9CmfV4KMmQfBiCbXxbKcCDo6PiYKbmM.C3A.MK1"
+
+  - pause:
+      prompt: |
+        pls try sshing to {{ansible_hostname}} using your key - abort execution
+        if this does not work as we're about to disable password authentication
+        for ssh
+
+  - name: disable password ssh access
+    lineinfile:
+      path: /etc/ssh/sshd_config
+      regexp: ^#?PasswordAuthentication
+      line: PasswordAuthentication no
+
+  when: "'prelim-setup' in ansible_run_tags"

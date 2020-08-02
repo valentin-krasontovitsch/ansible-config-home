@@ -38,15 +38,4 @@
   tags:
     - screen
 
-- user:
-    name: val
-    groups: adm,sudo
-    append: yes
-    generate_ssh_key: yes
-    ssh_key_bits: 2048
-    ssh_key_file: .ssh/id_rsa
-    shell: /usr/bin/fish
-    password: $6$9/wKN0wpSk.TQi$syKdFMSR6OqSy8R31.X/k8.JaBR22xUKa/92.uthEIkGye3n.h2R2A0Lgp16aPUCOvh0e3.uKiZCpAO8ATRdd0
-    update_password: on_create
-  tags:
-    - users
+      # TODO - name: add /etc to git control, and do first commit

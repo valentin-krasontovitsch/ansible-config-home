@@ -1,4 +1,10 @@
 ---
+- hosts: all:!laptops
+  remote_user: pi
+  roles:
+    - { role: prelim-setup }
+  tags: prelim-setup
+
 - hosts: all
   roles:
     - { role: common, tags: [common] }
