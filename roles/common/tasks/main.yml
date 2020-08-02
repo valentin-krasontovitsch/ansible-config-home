@@ -1,5 +1,5 @@
 ---
-- name: Install basic toolsgit
+- name: Install basic tools
   apt:
     name:
     - htop
@@ -44,9 +44,7 @@
     mode: 0644
     owner: "{{ user | default('val') }}"
     group: "{{ user | default('val') }}"
-  tags:
-    - val
-  register: paste_vimrc
+  when: "'pies' in group_names"
 
 - name: Paste vals .screenrc
   copy:
@@ -55,10 +53,4 @@
     mode: 0644
     owner: "{{ item.name }}"
     group: "{{ item.name }}"
-  with_items:
-    - { name: val }
-    - { name: naz }
-  tags:
-    - screen
-
-      # TODO - name: add /etc to git control, and do first commit
+  loop: "{{ users }}"
