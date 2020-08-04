@@ -1,2 +1,5 @@
 users:
   - name: val
+
+service_users:
+  - name: naz-gaming-laptop

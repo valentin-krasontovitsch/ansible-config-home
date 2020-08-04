@@ -3,6 +3,7 @@
   - name: install fish as that's our favourite shell
     apt:
       name: fish
+
   - name: setup val user
     user:
       name: val

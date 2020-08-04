@@ -27,8 +27,8 @@
 
 - hosts: dmz
   roles:
-    - { role: ssh }
-  tags: ssh
+    - { role: dmz-ssh }
+  tags: ssh, dmz, dmz-ssh, ssh-dmz
 
       # - hosts: dmz
       #   tasks:

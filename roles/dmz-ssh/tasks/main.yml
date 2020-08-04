@@ -1,0 +1,44 @@
+---
+- name: setup service users
+  user:
+    name: "{{item.name}}"
+    shell: /bin/false
+    password: "!"
+  loop: "{{ service_users }}"
+
+- name: make sure .ssh dir exists
+  file:
+    path: /home/{{ item.name }}/.ssh
+    state: directory
+    owner: "{{ item.name }}"
+    group: "{{ item.name }}"
+    mode: 0700
+  loop: "{{ service_users }}"
+
+- name: copy authorized key file
+  copy:
+    src: files/{{item.name}}-auth-keys
+    dest: /home/{{item.name}}/.ssh/authorized_keys
+    owner: "{{ item.name }}"
+    group: "{{ item.name }}"
+    mode: 0600
+  loop: "{{ service_users}}"
+
+- set_fact:
+    permitted_users: "{{ users + service_users }}"
+
+- pause:
+    prompt: |
+      pls try sshing to {{ansible_hostname}} using one of the users 
+      {{ permitted_users }} - abort execution if this does not work as we're
+      about to make these the only users that can log on via ssh on
+      {{ ansible_hostname }}
+
+- name: Only permitted users may logon via ssh
+  blockinfile: 
+    block: 'AllowUsers {% set comma = joiner(" ") -%}
+      {% for user in permitted_users -%}
+      {{ comma() }}{{ user.name }}{% endfor %}'
+    dest: /etc/ssh/sshd_config
+    backup: yes
+    validate: /usr/sbin/sshd -T -f %s
