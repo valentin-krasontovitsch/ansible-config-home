@@ -56,6 +56,7 @@
 - name: configure system vim settings
   blockinfile:
     dest: /etc/vim/vimrc
+    marker: '" ANSIBLE NO TEMP NO MOUSE {mark}'
     block: |
       set noswapfile
       set mouse-=a
