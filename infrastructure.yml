@@ -18,7 +18,8 @@
 - hosts: pies
   roles:
     - { role: bluetooth }
-  tags: bluetooth
+    - { role: radio }
+  tags: bluetooth, radio
 
 - hosts: headless_pies
   roles:
