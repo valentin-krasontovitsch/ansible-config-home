@@ -29,6 +29,7 @@
 - hosts: dmz
   roles:
     - { role: dmz-ssh }
+    - { role: docker, tags: [docker] }
   tags: ssh, dmz, dmz-ssh, ssh-dmz
 
       # - hosts: dmz
