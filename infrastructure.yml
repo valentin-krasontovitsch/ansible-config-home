@@ -47,19 +47,21 @@
       #     - name: setup ssh
       #       debug:
       #         msg: |
-      #           TODO configure sshd config - no challenge, no passphrase, something
-      #           with pam?, which user names are admissible, exception for
-      #           naz-gaming-laptop group, portforward for naz-gaming-laptop?
-      #         msg: TODO setup authorized_keys files for all users
-      #         msg: TODO setup naz-gaming-laptop user account
+      #           TODO configure sshd config - no challenge, something
+      #           with pam?
       #         msg: TODO configure pam in /etc/??
       #         msg: TODO have to maybe just touch a file in the users' home folder?
+      #
+      #
       #         msg: TODO install docker
       #     - name: setup traefik config - TODO write all services into traefik conf - dashboard, radio
       #           frontend, jupyter,
       #     - name: deploy traefik - TODO use docker, get config from gitlab project
+      #
       #     - name: deploy radio-control frontend
+      #
       #     - name: setup openvpn... oh my
+      #
       #     - name: cronjob for registering ip for domain
       #     - name: setup dnsmasq with securedns / dnssec ?!, and blocking of stuff in hosts file
       #     - name: setup fund prices tracking
