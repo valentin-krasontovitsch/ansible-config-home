@@ -30,6 +30,7 @@
   roles:
     - { role: dmz-ssh }
     - { role: docker, tags: [docker] }
+    - { role: ingress, tags: [ingress] }
   tags: ssh, dmz, dmz-ssh, ssh-dmz
 
       # - hosts: dmz

@@ -1,0 +1,27 @@
+---
+- name: update the ip for our domain ranzig.freemyip.com
+  cron:
+    hour: '12'
+    minute: '0'
+    name: ranzig-ip-update
+    job: >-
+      curl -Lso /dev/null
+      https://freemyip.com/update?token={{ ranzig_token }}&domain=ranzig.freemyip.com
+
+- name: get traefik config
+  git:
+    repo: https://gitlab.com/v.krasontov/traefik-home-config.git
+    dest: /opt/traefik-home-config
+    update: "{{ update_ingress_conf | default('no') }}"
+
+- name: run traefik
+  docker_container:
+    name: traefik
+    restart_policy: always
+    published_ports:
+      - 80:80
+      - 443:443
+      - 8081:8080
+    image: traefik:2.0
+    volumes:
+      - /opt/traefik-home-config:/etc/traefik
