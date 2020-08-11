@@ -16,6 +16,24 @@
     - vim
   tags: basic-tools
 
+- name: Link python to python3
+  file:
+    state: link
+    src: /usr/bin/python3
+    path: /usr/bin/python
+
+- name: Remove all traces of python2
+  apt:
+    name:
+    - python2
+    - python2-minimal
+    - python2.7
+    - python2.7-minimal
+    - libpython2-stdlib:armhf
+    - libpython2.7-minimal:armhf
+    - libpython2.7-stdlib:armhf
+    state: absent
+
 - name: Install omf
   become: item.name
   shell:
@@ -78,3 +96,8 @@
     dest: /etc/environment
     line: TZ=Europe/Oslo
   tags: timezone
+
+- name: Install pip requirements
+  shell:
+    cmd: python3 -m pip install setuptools virtualenv
+  tags: pip
