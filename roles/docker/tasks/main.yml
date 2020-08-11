@@ -41,3 +41,7 @@
     daemon_reload: yes
     enabled: yes
     state: started
+
+- name: setup python docker sdk for using ansible docker module
+  pip:
+    name: docker
