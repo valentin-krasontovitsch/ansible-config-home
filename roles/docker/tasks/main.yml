@@ -1,5 +1,5 @@
 ---
-- name: Install prerequisites
+- name: install prerequisites
   apt:
     name:
     - apt-transport-https
@@ -17,6 +17,7 @@
       shell:
         cmd: dpkg --print-architecture
       register: arch
+      changed_when: no
     - name: record linux repository in sources
       lineinfile:
         path: /etc/apt/sources.list.d/docker.list
