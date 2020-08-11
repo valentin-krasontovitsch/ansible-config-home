@@ -64,8 +64,11 @@
       #     - name: setup openvpn... oh my
       #
       #     - name: cronjob for registering ip for domain
-      #     - name: setup dnsmasq with securedns / dnssec ?!, and blocking of stuff in hosts file
+      #     - name: setup dnsmasq with securedns / dnssec ?!, and blocking of
+      #         stuff in hosts file
       #     - name: setup fund prices tracking
+      #     - name: setup transmission-gtk to run in docker container (check
+      #         traefik home config)
       #
       # - hosts: climate
       #   tasks:
