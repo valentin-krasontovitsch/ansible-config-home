@@ -1,0 +1,13 @@
+---
+- name: install tor
+  apt:
+    name: tor
+
+- name: configure tor
+  template:
+    src: files/torrc
+    dest: /etc/tor/torrc
+
+- name: install monitoring tool
+  pip:
+    name: nyx

@@ -1,0 +1,13 @@
+SocksPort 0
+RunAsDaemon 1
+ORPort 9001
+ORPort [{{ ansible_default_ipv6.address }}]:9001
+Nickname noregerbest
+ContactInfo v(dot)krasontov(at)gmail(dot)com [tor-relay.co]
+Log notice file /var/log/tor/notices.log
+ExitPolicy reject6 *:*, reject *:*
+RelayBandwidthRate 10 MBits
+RelayBandwidthBurst 20 MBits
+DisableDebuggerAttachment 0
+ControlPort 9051
+CookieAuthentication 1
