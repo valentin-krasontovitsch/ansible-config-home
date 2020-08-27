@@ -34,53 +34,27 @@
     - { role: tor, tags: [tor] }
   tags: ssh, dmz, dmz-ssh, ssh-dmz
 
-      # - hosts: dmz
-      #   tasks:
-      #     - name: install tor
-      #       apt:
-      #         name:
-      #           - tor
-      #           - obfs4proxy
-      #     - name: setup tor service
-      #       debug:
-      #         msg: TODO necessary?
-      #     - name: configure tor /etc/tor/torrc
-      #       debug:
-      #         msg: TODO set limits, bridge, exit policy, ports, ...
-      #     - name: setup ssh
-      #       debug:
-      #         msg: |
-      #           TODO configure sshd config - no challenge, something
-      #           with pam?
-      #         msg: TODO configure pam in /etc/??
-      #         msg: TODO have to maybe just touch a file in the users' home folder?
-      #
-      #
-      #         msg: TODO install docker
-      #     - name: setup traefik config - TODO write all services into traefik conf - dashboard, radio
-      #           frontend, jupyter,
-      #     - name: deploy traefik - TODO use docker, get config from gitlab project
-      #
-      #     - name: deploy radio-control frontend
-      #
-      #     - name: setup openvpn... oh my
-      #
-      #     - name: cronjob for registering ip for domain
-      #     - name: setup dnsmasq with securedns / dnssec ?!, and blocking of
-      #         stuff in hosts file
-      #     - name: setup fund prices tracking
-      #     - name: setup transmission-gtk to run in docker container (check
-      #         traefik home config)
-      #
-      # - hosts: climate
-      #   tasks:
-      #     - name: enable i2c part 1
-      # make sure line `dtparam=i2c_arm=on` is in `/boot/config.txt`
-      # make sure line `i2c-dev` is at bottom of `/etc/modules`
-      # install i2c-tools and python-smbus
-      # install with pip adafruit-circuitpython-am2320
-      # if device is connected, run `i2cdetect -y 1` twice and expect some
-      # non-hyphen output (only if you feel like it)
-      # install binary/script in /usr/local/bin with right rights and owner
-      # create logs dir
-      # setup line in crontab (file?)
+# TODO setup ssh 2FA - config and user!
+# TODO fix radio to make it really work (pulseaudio was capricious)
+# TODO write crontab for radio alarm
+# TODO deploy radio backend
+# TODO deploy radio front-end
+# TODO openvpn O_O
+# TODO cronjob for registering ip for domain (already installed!)
+# TODO name: setup dnsmasq with securedns / dnssec ?!
+# TODO setup pihole dns blocking
+# TODO setup fund prices tracking
+# TODO setup transmission-gtk to run in docker container, expose in
+# traefik
+# - hosts: climate
+#   tasks:
+#     - name: enable i2c part 1
+# make sure line `dtparam=i2c_arm=on` is in `/boot/config.txt`
+# make sure line `i2c-dev` is at bottom of `/etc/modules`
+# install i2c-tools and python-smbus
+# install with pip adafruit-circuitpython-am2320
+# if device is connected, run `i2cdetect -y 1` twice and expect some
+# non-hyphen output (only if you feel like it)
+# install binary/script in /usr/local/bin with right rights and owner
+# create logs dir
+# setup line in crontab (file?)
