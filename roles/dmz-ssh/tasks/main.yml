@@ -5,6 +5,7 @@
     shell: /bin/false
     password: "!"
   loop: "{{ service_users }}"
+  notify: confirm
 
 - name: make sure .ssh dir exists
   file:
@@ -14,6 +15,7 @@
     group: "{{ item.name }}"
     mode: 0700
   loop: "{{ service_users }}"
+  notify: confirm
 
 - name: copy authorized key file
   copy:
@@ -23,22 +25,86 @@
     group: "{{ item.name }}"
     mode: 0600
   loop: "{{ service_users}}"
+  notify: confirm
 
 - set_fact:
     permitted_users: "{{ users + service_users }}"
 
-- pause:
-    prompt: |
-      pls try sshing to {{ansible_hostname}} using one of the users 
-      {{ permitted_users }} - abort execution if this does not work as we're
-      about to make these the only users that can log on via ssh on
-      {{ ansible_hostname }}
-
 - name: Only permitted users may logon via ssh
-  blockinfile: 
-    block: 'AllowUsers {% set comma = joiner(" ") -%}
+  lineinfile:
+    regexp: ^#?AllowUsers
+    line: 'AllowUsers {% set comma = joiner(" ") -%}
       {% for user in permitted_users -%}
       {{ comma() }}{{ user.name }}{% endfor %}'
     dest: /etc/ssh/sshd_config
     backup: yes
     validate: /usr/sbin/sshd -T -f %s
+
+- name: install google auth pam module
+  apt:
+    name:
+      - libpam-google-authenticator
+
+- name: 2fa setup
+  block:
+    - name: enable 2fa in sshd config
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: "{{item.re}}"
+        line: "{{item.line}}"
+        validate: /usr/sbin/sshd -T -f %s
+      loop:
+        - re: ^#?UsePAM
+          line: UsePAM yes
+        - re: ^#?ChallengeResponseAuthentication
+          line: ChallengeResponseAuthentication yes
+        - re: ^#?AuthenticationMethods
+          line: AuthenticationMethods publickey,keyboard-interactive
+      notify:
+        - restart sshd
+
+    - name: add exception for 2fa for naz-gaming-laptop
+      blockinfile:
+        path: /etc/ssh/sshd_config
+        marker: "# {mark} exception for {{item.name}}"
+        block: |
+          Match User {{item.name}}
+            AuthenticationMethods publickey
+        validate: /usr/sbin/sshd -T -C user=somebody -f %s 
+      loop: "{{service_users}}"
+      notify:
+        - restart sshd
+
+    - name: add exception for 2fa for local network
+      blockinfile:
+        path: /etc/ssh/sshd_config
+        marker: "# {mark} 2fa exception for local access"
+        block: |
+          Match Address 192.168.10.0/24
+            AuthenticationMethods publickey
+        validate: /usr/sbin/sshd -T -C addr=192.168.10.143,user=somebody -f %s
+      loop: "{{service_users}}"
+      notify:
+        - restart sshd
+
+    - name: trigger google auth pam module in sshd pam
+      blockinfile:
+        path: /etc/pam.d/sshd
+        insertafter: "@include common-auth"
+        marker: "# {mark} 2fa config"
+        block: |-
+          auth required pam_google_authenticator.so
+      notify:
+        - restart sshd
+
+    - name: put google auth file in place
+      copy:
+        src: files/{{ item.name }}-google-authenticator
+        dest: /home/{{ item.name }}/.google_authenticator
+        owner: "{{ item.name }}"
+        group: "{{ item.name }}"
+        mode: "0400"
+        force: no
+      loop: "{{ users }}"
+
+  tags: 2fa

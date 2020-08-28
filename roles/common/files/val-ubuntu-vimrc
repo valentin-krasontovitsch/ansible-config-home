@@ -31,7 +31,7 @@ filetype plugin indent on    " required
 syntax enable
 
 " general fold rules
-set foldlevel=0 foldcolumn=2 foldnestmax=6 foldmethod=indent
+set foldlevel=0 foldcolumn=0 foldnestmax=6 foldmethod=indent
 
 " general indent rules
 set ts=2 sw=2 sts=0 expandtab

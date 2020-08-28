@@ -1,0 +1,13 @@
+---
+- name: restart sshd
+  systemd:
+    name: ssh
+    state: restarted
+
+- name: confirm
+  pause:
+    prompt: |
+      pls try sshing to {{ansible_hostname}} using one of the users
+      {{ permitted_users }} - abort execution if this does not work as we're
+      about to make these the only users that can log on via ssh on
+      {{ ansible_hostname }}

@@ -28,13 +28,12 @@
 
 - hosts: dmz
   roles:
-    - { role: dmz-ssh }
+    - { role: dmz-ssh, tags: [dmz-ssh, ssh-dmz] }
     - { role: docker, tags: [docker] }
     - { role: ingress, tags: [ingress] }
     - { role: tor, tags: [tor] }
-  tags: ssh, dmz, dmz-ssh, ssh-dmz
+  tags: ssh, dmz
 
-# TODO setup ssh 2FA - config and user!
 # TODO fix radio to make it really work (pulseaudio was capricious)
 # TODO write crontab for radio alarm
 # TODO deploy radio backend
