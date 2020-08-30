@@ -39,7 +39,6 @@
 # TODO deploy radio backend
 # TODO deploy radio front-end
 # TODO openvpn O_O
-# TODO cronjob for registering ip for domain (already installed!)
 # TODO name: setup dnsmasq with securedns / dnssec ?!
 # TODO setup pihole dns blocking
 # TODO setup fund prices tracking
