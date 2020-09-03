@@ -2,20 +2,21 @@
 - name: Install basic tools
   apt:
     name:
-    - htop
-    - locate
-    - git
-    - fish
-    - tree
-    - lsof
-    - screen
-    - jq
-    - python3
-    - python3-pip
-    - wget
-    - nmap
-    - vim
-    - silversearcher-ag
+      - htop
+      - locate
+      - dnsutils
+      - git
+      - fish
+      - tree
+      - lsof
+      - screen
+      - jq
+      - python3
+      - python3-pip
+      - wget
+      - nmap
+      - vim
+      - silversearcher-ag
   tags: basic-tools
 
 - name: Link python to python3
@@ -27,13 +28,13 @@
 - name: Remove all traces of python2
   apt:
     name:
-    - python2
-    - python2-minimal
-    - python2.7
-    - python2.7-minimal
-    - libpython2-stdlib:armhf
-    - libpython2.7-minimal:armhf
-    - libpython2.7-stdlib:armhf
+      - python2
+      - python2-minimal
+      - python2.7
+      - python2.7-minimal
+      - libpython2-stdlib:armhf
+      - libpython2.7-minimal:armhf
+      - libpython2.7-stdlib:armhf
     state: absent
 
 - name: Install omf
