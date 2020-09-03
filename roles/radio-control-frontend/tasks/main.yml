@@ -1,0 +1,7 @@
+---
+# checkout git repo somewhere locally
+# build (npm run build)
+# copy over dist dir
+# copy over service file
+# enable and start service
+# add line in ingress config

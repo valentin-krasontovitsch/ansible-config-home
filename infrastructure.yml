@@ -17,9 +17,14 @@
 
 - hosts: pies
   roles:
-    - { role: bluetooth }
-    - { role: radio }
-  tags: bluetooth, radio
+    - bluetooth
+  tags: bluetooth
+
+- hosts: radio
+  roles:
+    - radio
+    - { role: radio-control-backend, tags: [rcon-back, rcon] }
+  tags: radio
 
 - hosts: headless_pies
   roles:
@@ -28,19 +33,19 @@
 
 - hosts: dmz
   roles:
-    - { role: dmz-ssh, tags: [dmz-ssh, ssh-dmz] }
+    - { role: dmz-ssh, tags: [dmz-ssh, ssh-dmz, ssh] }
     - { role: docker, tags: [docker] }
     - { role: ingress, tags: [ingress] }
     - { role: tor, tags: [tor] }
-  tags: ssh, dmz
+    - { role: radio-control-frontend, tags: [rcon-front, rcon, radio] }
+  tags: dmz
 
 - hosts: dns_servers
   roles:
     - dns-server
   tags: dns, dns-server
 
-# TODO fix radio to make it really work (pulseaudio was capricious)
-# TODO write crontab for radio alarm
+# TODO write radio role
 # TODO deploy radio backend
 # TODO deploy radio front-end
 # TODO openvpn O_O

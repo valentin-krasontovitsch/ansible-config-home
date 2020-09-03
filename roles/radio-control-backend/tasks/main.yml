@@ -1,0 +1,5 @@
+---
+# copy over binary
+# copy over service unit file
+# enable and start service
+# add in ingress config

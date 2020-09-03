@@ -1,8 +1,12 @@
 ---
+# TODO need to configure audio somehow to be able to control volume - or change
+# script to control master, seems to work fine too
+# sudo amixer -q sset 'Master' 10%
+#
 # put binaries in place
 #
 # record radio stations in environment
 #
-# setup cronjob on the actual radio
+# setup cronjob
 #
 # setup backend on actual radio
