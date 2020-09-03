@@ -45,7 +45,8 @@ augroup indentation_folding
   au Filetype css setlocal ts=2 sw=2 sts=0 noexpandtab foldmethod=syntax
   au BufRead,BufNewFile *.go setlocal noet ts=4 sw=4 foldnestmax=1 foldlevel=0 foldmethod=syntax
   au BufRead,BufNewFile *.tex setlocal ts=2 sw=2 foldnestmax=3 foldlevel=1 foldmethod=indent expandtab
-  au BufNewFile,BufRead *.yaml,*.yml setlocal foldmethod=indent ts=2 sw=2 sts=0 expandtab foldnestmax=1
+  au BufNewFile,BufRead *.yaml,*.yml setlocal foldmethod=indent ts=2 sw=2
+    \ sts=0 expandtab indentkeys-=0# foldnestmax=10 nosi
   au BufNewFile,BufRead *.py setlocal tabstop=4 softtabstop=4 shiftwidth=4 textwidth=79 expandtab autoindent foldmethod=indent fileformat=unix
   " Don't screw up folds when inserting text that might affect them, until
   " leaving insert mode. Foldmethod is local to the window.
@@ -108,3 +109,4 @@ set vb
 set t_vb=
 
 set noswapfile
+set mouse-=a
