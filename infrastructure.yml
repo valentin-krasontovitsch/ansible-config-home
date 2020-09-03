@@ -34,13 +34,16 @@
     - { role: tor, tags: [tor] }
   tags: ssh, dmz
 
+- hosts: dns_servers
+  roles:
+    - dns-server
+  tags: dns, dns-server
+
 # TODO fix radio to make it really work (pulseaudio was capricious)
 # TODO write crontab for radio alarm
 # TODO deploy radio backend
 # TODO deploy radio front-end
 # TODO openvpn O_O
-# TODO name: setup dnsmasq with securedns / dnssec ?!
-# TODO setup pihole dns blocking
 # TODO setup fund prices tracking
 # TODO setup transmission-gtk to run in docker container, expose in
 # traefik

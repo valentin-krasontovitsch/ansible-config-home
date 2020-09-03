@@ -19,3 +19,6 @@ radio-alarm
 
 [pie_with_red_led]
 home-manager
+
+[dns_servers]
+home-manager

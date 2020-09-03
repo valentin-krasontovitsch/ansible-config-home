@@ -1,0 +1,15 @@
+---
+- name: Setup dnsmasq
+  apt:
+    name:
+      - dnsmasq
+
+- name: Configure dnsmasq
+  template:
+    src: files/dnsmasq.conf
+    dest: /etc/dnsmasq.conf
+    validate: dnsmasq --test --conf-file=%s
+  notify: restart dnsmasq
+
+# TODO configure the dns-server as a dns server for all other hosts
+# TODO setup pihole dns blocking
