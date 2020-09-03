@@ -11,37 +11,38 @@
     - pulseaudio-module-bluetooth
     - pavucontrol
     - bluez-firmware
-    - mplayer
+
+# not strictly necessary, just convenience
+- name: make sure users {{ users }} are in bluetooth group
+  user:
+    groups: bluetooth
+    append: yes
+    name: "{{ item.name }}"
+  loop: "{{ users }}"
+  notify: reboot
+  tags: bluetooth-group
 
 - name: put pulse audio service unit file in place
   copy:
     src: files/pulseaudio.service
     dest: /etc/systemd/system/pulseaudio.service
+  register: pa_service_file
   notify:
     - restart pulseaudio
 
-# TODO we still have to run `sudo pulseaudio -v --daemonize=false --system`
-# once for some folders to get created in /run before this works : /
+- name: make sure we use a speaker once we connect
+  lineinfile:
+    path: /etc/pulse/default.pa
+    regex: "#?load-module module-switch-on-connect"
+    line: load-module module-switch-on-connect
+  notify:
+    - restart pulseaudio
 
 - name: enable and start pulseaudio service
   systemd:
     name: pulseaudio
     enabled: true
-    daemon_reload: true
+    daemon_reload: "{{ pa_service_file.changed }}"
     state: started
   notify:
     - restart bluetooth
-
-# TODO need to configure audio somehow to be able to control volume - or change
-# script to control master, seems to work fine too
-# sudo amixer -q sset 'Master' 10%
-
-# TODO find out if this is still relevant
-#- name: disable SAP as it gives an error message
-#  lineinfile:
-#    insertafter: [Service]
-#    regexp: ^ExecStart
-#    line: ExecStart=/usr/lib/bluetooth/bluetoothd --noplugin=sap
-#    path: /etc/systemd/system/bluetooth.target.wants/bluetooth.service
-#  notify:
-#    - restart bluetooth service

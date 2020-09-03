@@ -1,12 +1,15 @@
 ---
+- name: restart pulseaudio
+  systemd:
+    daemon-reload: yes
+    name: pulseaudio
+    state: restarted
+
 - name: restart bluetooth
   systemd:
     daemon-reload: yes
     name: bluetooth
     state: restarted
 
-- name: restart pulse
-  systemd:
-    daemon-reload: yes
-    name: pulseaudio
-    state: restarted
+- name: reboot
+  reboot: {}
