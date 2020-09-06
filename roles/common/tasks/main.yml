@@ -17,6 +17,8 @@
       - nmap
       - vim
       - silversearcher-ag
+      - mplayer
+      - mpg123
   tags: basic-tools
 
 - name: Link python to python3
