@@ -1,0 +1,12 @@
+[Unit]
+Description=Radio Web API Server
+After=pulseaudio.service bluetooth.target sound.target
+
+[Service]
+ExecStart=/usr/local/bin/{{ binary | basename }}
+Restart=on-failure
+User=root
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

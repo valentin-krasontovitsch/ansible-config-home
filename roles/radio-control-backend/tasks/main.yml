@@ -1,5 +1,52 @@
 ---
-# copy over binary
-# copy over service unit file
-# enable and start service
-# add in ingress config
+- name: Check out backend project
+  git:
+    dest: "{{ project_dest_dir }}"
+    repo: https://github.com/valentin-krasontovitsch/radio-web-api.git
+    version: master
+  register: checkout_project
+  delegate_to: localhost
+
+- name: Get project version
+  shell:
+    chdir: "{{ project_dest_dir }}"
+    cmd: git describe --tags
+  register: service_version
+  changed_when: no
+  delegate_to: localhost
+  when: checkout_project.changed or
+    ( lookup('fileglob', binary) | length ) == 0
+
+- name: Compile binary
+  shell:
+    executable: /usr/bin/fish
+    chdir: "{{ project_dest_dir }}"
+    cmd: go build -ldflags "-X main.version={{ service_version.stdout }}" .
+  environment:
+    GOOS: linux
+    GOARCH: arm
+    GOARM: "{{ ansible_architecture | regex_search('0-9') }}"
+  delegate_to: localhost
+  when: checkout_project.changed or
+    ( lookup('fileglob', binary) | length ) == 0
+
+- name: Copy binary in place
+  copy:
+    src: "{{ binary }}"
+    dest: /usr/local/bin/{{ binary | basename }}
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Copy over service unit file
+  template:
+    src: files/radio-web-api.service
+    dest: /etc/systemd/system/radio-web-api.service
+  register: service_unit_file
+
+- name: enable and start web service
+  systemd:
+    name: radio-web-api
+    enabled: true
+    daemon_reload: "{{ service_unit_file.changed }}"
+    state: "{{ service_unit_file.changed | ternary('restarted', 'started') }}"

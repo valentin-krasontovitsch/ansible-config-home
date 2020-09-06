@@ -1,0 +1,3 @@
+---
+project_dest_dir: /opt/radio-web-api
+binary: "{{ project_dest_dir }}/radio-web-api"
