@@ -96,11 +96,27 @@
   loop: "{{ users }}"
   tags: screenrc
 
-- name: Set time zone
+- name: Set time zone in env
   lineinfile:
     dest: /etc/environment
     line: TZ=Europe/Oslo
   tags: timezone
+  notify: reboot
+
+- name: Set time zone in file
+  copy:
+    dest: /etc/timezone
+    content: TZ=Europe/Oslo
+  tags: timezone
+  notify: reboot
+
+- name: Link localtime to correct time zone
+  file:
+    state: link
+    src: /usr/share/zoneinfo/Europe/Oslo
+    dest: /etc/localtime
+  tags: timezone
+  notify: reboot
 
 - name: Install pip requirements
   shell:
