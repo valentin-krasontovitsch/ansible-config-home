@@ -22,7 +22,7 @@
 
 - hosts: radio
   roles:
-    - radio
+    - { role: radio-alarm, tags: [radio-alarm] }
     - { role: radio-control-backend, tags: [rcon-back, rcon] }
   tags: radio
 

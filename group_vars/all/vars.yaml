@@ -4,3 +4,6 @@ users:
 
 service_users:
   - name: naz-gaming-laptop
+
+speaker_addresses:
+  t5: 40:EF:4C:1D:37:F0

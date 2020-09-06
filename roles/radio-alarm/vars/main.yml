@@ -1,0 +1,49 @@
+---
+binaries_dest_folder: /opt/blue-shell-radio
+radio_stations:
+  - name: bbc2
+    url: http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio2_mf_p
+    var_name: BBC2
+  - name: wdr2
+    var_name: WDR2
+    url: "https://wdr-wdr2-rheinruhr.sslcast.addradio.de\
+      /wdr/wdr2/rheinruhr/mp3/128/stream.mp3"
+  - name: radio-norge
+    var_name: RADIO_NORGE
+    url: http://live-bauerno.sharp-stream.com/radionorge_no_mp3
+  - name: jule-radio
+    var_name: JULE_RADIO
+    url: http://live-bauerno.sharp-stream.com/station17_no_mp3
+  - name: p3
+    var_name: P3
+    url: http://lyd.nrk.no/nrk_radio_p3_mp3_h
+morning_station_index: 0
+start_volume: 25
+first_increase: 10
+second_increase: 10
+speaker_name: t5
+run_radio_cmd: >-
+      /usr/local/bin/radio.sh ${{ speaker_name }}
+      {{ radio_stations[morning_station_index].url }}
+      {{ start_volume }}\% 2>&1 | /usr/bin/logger -t RADIO-ALARM
+cronjobs:
+  - minute: "40"
+    name: start radio weekdays
+    command: "{{ run_radio_cmd }}"
+  - minute: "50"
+    name: louder weekdays
+    command: "amixer -q sset 'Master' \
+      {{ start_volume + first_increase }}\\%"
+  - minute: "59"
+    name: even louder weekdays
+    command: "amixer -q sset 'Master' \
+      {{ start_volume + first_increase + second_increase }}\\%"
+  - minute: "10"
+    hour: "8"
+    name: radio stap weekdays
+    command: killall -9 mplayer
+  - minute: "0"
+    hour: "8"
+    weekday: "6-7"
+    name: start radio weekend
+    command: "{{ run_radio_cmd }}"

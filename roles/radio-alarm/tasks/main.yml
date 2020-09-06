@@ -1,0 +1,54 @@
+---
+- name: Check out project with binaries
+  git:
+    dest: "{{ binaries_dest_folder }}"
+    repo: https://github.com/valentin-krasontovitsch/blue-radio-shell.git
+    version: simplify
+  register: checkout_binaries
+  delegate_to: localhost
+
+- name: Copy binaries in place
+  copy:
+    src: "{{ item }}"
+    dest: /usr/local/bin/{{ item | basename }}
+    owner: root
+    group: root
+    mode: 0755
+  with_fileglob: '{{ binaries_dest_folder }}/*.sh'
+
+- name: record radio urls in environment
+  lineinfile:
+    path: /etc/environment
+    regexp: "^{{ item.var_name }}="
+    line: "{{ item.var_name }}={{ item.url }}"
+  loop: "{{ radio_stations }}"
+
+- name: record speaker address in environment
+  lineinfile:
+    path: /etc/environment
+    regexp: "^{{ speaker_name }}="
+    line: "{{ speaker_name }}={{ speaker_addresses[speaker_name] }}"
+
+- name: setup path in crontab
+  cron:
+    env: yes
+    name:  PATH
+    value: /usr/local/bin:/usr/bin:/bin
+
+- name: setup cronjob for starting radio
+  cron:
+    hour: "{{ item.hour | default('6') }}"
+    minute: "{{ item.minute }}"
+    weekday: "{{ item.weekday | default('1-5') }}"
+    name: "{{ item.name }}"
+    job: "{{ item.command }}"
+  loop: "{{ cronjobs }}"
+  tags: cronjobs
+
+- name: setup cronjob for always connecting to speaker
+  cron:
+    name: connect to {{ speaker_name }}
+    job: connect.sh ${{ speaker_name }} 2>&1 >> /dev/null
+  tags: cronjobs
+
+# TODO setup interface for configuring radio-alarm
