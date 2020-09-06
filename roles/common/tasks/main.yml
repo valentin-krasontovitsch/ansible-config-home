@@ -121,4 +121,6 @@
 - name: Install pip requirements
   shell:
     cmd: python3 -m pip install setuptools virtualenv
+  register: pip_reqs
+  changed_when: "'Installing' in pip_reqs.stdout"
   tags: pip
