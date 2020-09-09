@@ -18,8 +18,8 @@ radio_stations:
     var_name: P3
     url: http://lyd.nrk.no/nrk_radio_p3_mp3_h
 morning_station_index: 0
-start_volume: 25
-first_increase: 10
+start_volume: 15
+first_increase: 5
 second_increase: 10
 speaker_name: t5
 run_radio_cmd: >-
@@ -27,14 +27,14 @@ run_radio_cmd: >-
       {{ radio_stations[morning_station_index].url }}
       {{ start_volume }}\% 2>&1 | /usr/bin/logger -t RADIO-ALARM
 cronjobs:
-  - minute: "40"
+  - minute: "30"
     name: start radio weekdays
     command: "{{ run_radio_cmd }}"
-  - minute: "50"
+  - minute: "45"
     name: louder weekdays
     command: "amixer -q sset 'Master' \
       {{ start_volume + first_increase }}\\%"
-  - minute: "59"
+  - minute: "53"
     name: even louder weekdays
     command: "amixer -q sset 'Master' \
       {{ start_volume + first_increase + second_increase }}\\%"
