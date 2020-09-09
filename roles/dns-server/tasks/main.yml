@@ -11,5 +11,14 @@
     validate: dnsmasq --test --conf-file=%s
   notify: restart dnsmasq
 
+- name: Put local hosts in hosts file for local dns
+  blockinfile:
+    path: /etc/hosts
+    instertafter: "^127.0.1.1"
+    block: |-
+      192.168.10.123 home-manager.local home-manager
+      192.168.10.152 radio-alarm.local radio-alarm
+      192.168.10.169 val-laptop.local val-laptop
+
 # TODO configure the dns-server as a dns server for all other hosts
 # TODO setup pihole dns blocking
