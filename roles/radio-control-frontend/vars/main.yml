@@ -1,0 +1,5 @@
+---
+project_dest_dir: /opt/{{ app_name }}
+bundle_dir: "{{ project_dest_dir }}/dist"
+app_name: radio-control
+service_port: 8080

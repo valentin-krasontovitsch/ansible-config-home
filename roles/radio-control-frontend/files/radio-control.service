@@ -1,0 +1,12 @@
+[Unit]
+Description=Radio Control App
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/python3 -m http.server --directory {{bundle_dir}} {{service_port}}
+Restart=on-failure
+User=val
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

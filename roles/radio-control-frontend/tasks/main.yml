@@ -1,7 +1,37 @@
 ---
-# checkout git repo somewhere locally
-# build (npm run build)
-# copy over dist dir
-# copy over service file
-# enable and start service
-# add line in ingress config
+- name: Check out backend project
+  git:
+    dest: "{{ project_dest_dir }}"
+    repo: https://gitlab.com/v.krasontov/radio-control.git
+    version: develop
+  register: checkout_project
+  delegate_to: localhost
+
+- name: Build app
+  shell:
+    executable: /usr/bin/fish
+    chdir: "{{ project_dest_dir }}"
+    cmd: npm install && npm run build
+  delegate_to: localhost
+  when: checkout_project.changed
+
+- name: Copy app bundle in place
+  copy:
+    src: "{{ bundle_dir }}"
+    dest: /opt/{{ app_name }}
+    owner: val
+    group: val
+    mode: 0755
+
+- name: Copy over service unit file
+  template:
+    src: files/{{app_name}}.service
+    dest: /etc/systemd/system/{{app_name}}.service
+  register: service_unit_file
+
+- name: enable and start web service
+  systemd:
+    name: "{{ app_name }}"
+    enabled: true
+    daemon_reload: "{{ service_unit_file.changed }}"
+    state: "{{ service_unit_file.changed | ternary('restarted', 'started') }}"
