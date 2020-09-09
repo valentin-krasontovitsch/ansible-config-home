@@ -1,0 +1,3 @@
+---
+pi_hole_hosts_dest: /opt/steven-black-hosts
+blocked_hosts_file: "{{ pi_hole_hosts_dest }}/hosts"

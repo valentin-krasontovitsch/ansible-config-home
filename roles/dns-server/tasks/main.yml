@@ -20,5 +20,48 @@
       192.168.10.152 radio-alarm.local radio-alarm
       192.168.10.169 val-laptop.local val-laptop
 
-# TODO configure the dns-server as a dns server for all other hosts
-# TODO setup pihole dns blocking
+# TODO here we assume / know that dnsmasq is setup and running - we should note
+# this in a role, both for ubuntu and raspbian (or whatever it's called now)
+- block:
+  - name: Comment out all server lines in dnsmasq config
+    replace:
+      path: /etc/dnsmasq.conf
+      regexp: "^(server=(?!{{hostvars[groups['dns_server'][0]].ansible_default_ipv4.address}}).*)$"
+      replace: '#\1'
+  - name: Add our dns server as upstream server for dnsmasq
+    blockinfile:
+      path: /etc/dnsmasq.conf
+      block: server={{hostvars[groups['dns_server'][0]].ansible_default_ipv4.address}}
+      insertafter: '^#?server'
+      marker: '# {mark} ANSIBLE IN-HOUSE DNS SERVER'
+    register: add_dns_server_locally
+  - name: restart dnsmasq
+    systemd:
+      name: dnsmasq
+      state: restarted
+    when: add_dns_server_locally.changed
+  delegate_to: val-laptop
+
+- name: see if we already have a blocking hosts file
+  stat:
+    path: "{{ blocked_hosts_file }}"
+  register: expected_hosts_file
+  changed_when: no
+
+- name: get hosts file repo
+  git:
+    dest: "{{ pi_hole_hosts_dest }}"
+    repo: https://github.com/StevenBlack/hosts.git
+  when: not expected_hosts_file.stat.exists
+
+- name: setup cronjob for updating hosts file
+  cron:
+    hour: '11'
+    minute: '0'
+    name: pihole-hosts-file-update
+    job: >-
+      /bin/bash -c "/usr/bin/python3
+      {{ pi_hole_hosts_dest }}/updateHostsFile.py --auto
+      --skipstatichosts --nogendata
+      --extensions fakenews gambling porn &&
+      service dnsmasq restart"
