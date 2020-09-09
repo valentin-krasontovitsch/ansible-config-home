@@ -14,7 +14,7 @@
 - name: Put local hosts in hosts file for local dns
   blockinfile:
     path: /etc/hosts
-    instertafter: "^127.0.1.1"
+    insertafter: "^127.0.1.1"
     block: |-
       192.168.10.123 home-manager.local home-manager
       192.168.10.152 radio-alarm.local radio-alarm
