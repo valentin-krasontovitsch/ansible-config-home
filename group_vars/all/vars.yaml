@@ -7,3 +7,5 @@ service_users:
 
 speaker_addresses:
   t5: 40:EF:4C:1D:37:F0
+
+data_log_dir: /var/persistent/datalogs

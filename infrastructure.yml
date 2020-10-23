@@ -38,6 +38,7 @@
     - { role: ingress, tags: [ingress] }
     - { role: tor, tags: [tor] }
     - { role: radio-control-frontend, tags: [rcon-front, rcon, radio] }
+    - { role: fund-price-tracker, tags: [fund-price] }
   tags: dmz
 
 - hosts: dns_server

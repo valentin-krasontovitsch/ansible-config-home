@@ -1,0 +1,18 @@
+---
+- name: Copy over script for getting fund price
+  copy:
+    src: files/{{ price_binary_name }}
+    dest: "{{ price_binary_path }}"
+    mode: 0755
+    owner: root
+    group: root
+
+- name: Add cron job for logging price
+  cron:
+    hour: '17'
+    minute: '0'
+    name: get price for fund {{item.name}}
+    job: >-
+      /bin/bash -c "{{ price_binary_path }} {{ item.isin }} >>
+      {{ data_log_dir }}/fund-price-{{item.name}}.log"
+  loop: "{{ funds }}"

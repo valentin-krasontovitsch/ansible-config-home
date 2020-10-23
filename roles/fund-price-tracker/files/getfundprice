@@ -1,0 +1,14 @@
+#!/bin/bash
+fundarg=$1
+fund=${fundarg:-NO0010780521}
+
+if [[ ! $fund =~ ^[a-zA-Z]{2}[0-9]{10}$ ]]; then
+  echo usage: $0 ISIN
+  echo please supply valid fund isin, like NO0010780521
+  exit 1
+fi
+
+curl -Ls 'https://www.finansportalen.no/services/fund/aksjefond' | \
+  jq -cr "[ .[] |
+    select(.isin | contains(\"$fund\")) |
+    {isin, security_name, price, navdate} ] | unique | .[]"

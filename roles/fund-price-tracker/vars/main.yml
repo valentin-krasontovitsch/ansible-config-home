@@ -1,0 +1,10 @@
+---
+funds:
+  - isin: NO0010780521
+    name: klp-framtid
+  - isin: SE0005965688
+    name: handelsbanken-baerekraftig
+  - isin: NO0010801913
+    name: dnb-teknologi-n
+price_binary_path: /usr/local/bin/{{price_binary_name}}
+price_binary_name: getfundprice
