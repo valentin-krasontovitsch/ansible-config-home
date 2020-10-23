@@ -17,7 +17,7 @@
     insertafter: "^127.0.1.1"
     block: |-
       192.168.10.123 home-manager.local home-manager
-      192.168.10.152 radio-alarm.local radio-alarm
+      2a01:79d:7370:22c:af13:4c6b:c63a:6298 radio-alarm.local radio-alarm
       192.168.10.169 val-laptop.local val-laptop
 
 # TODO here we assume / know that dnsmasq is setup and running - we should note
