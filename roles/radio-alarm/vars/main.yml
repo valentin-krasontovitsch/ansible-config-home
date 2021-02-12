@@ -18,9 +18,9 @@ radio_stations:
     var_name: P3
     url: http://lyd.nrk.no/nrk_radio_p3_mp3_h
 morning_station_index: 0
-start_volume: 15
+start_volume: 20
 first_increase: 5
-second_increase: 10
+second_increase: 5
 speaker_name: t5
 run_radio_cmd: >-
       /usr/local/bin/radio.sh ${{ speaker_name }}
@@ -47,3 +47,12 @@ cronjobs:
     weekday: "6-7"
     name: start radio weekend
     command: "{{ run_radio_cmd }}"
+  - minute: "30"
+    hour: "8"
+    name: louder weekend
+    command: "amixer -q sset 'Master' \
+      {{ start_volume + first_increase }}\\%"
+  - minute: "10"
+    hour: "10"
+    name: radio stap weekend
+    command: killall -9 mplayer
