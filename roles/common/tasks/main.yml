@@ -19,7 +19,7 @@
       - vim
       - silversearcher-ag
       - mplayer
-      - mpg123
+      - mpg321
   tags: basic-tools
 
 - name: Link python to python3

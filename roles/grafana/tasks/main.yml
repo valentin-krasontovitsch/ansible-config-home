@@ -1,0 +1,32 @@
+---
+- name: make sure influxdb data dir exists
+  file:
+    path: /var/persistent/influxdb
+    state: directory
+
+- name: deploy influxdb
+  docker_container:
+    name: influxdb
+    image: influxdb:1.8.4
+    restart_policy: always
+    ports:
+      - 8086:8086
+    volumes:
+      - /var/persistent/influxdb:/var/lib/influxdb
+
+- name: make sure influxdb data dir exists
+  file:
+    path: /var/persistent/grafana:/var/lib/grafana
+    state: directory
+
+- name: deploy grafana
+  docker_container:
+    name: grafana
+    image: grafana:6.5.0
+    restart_policy: always
+    ports:
+      - 31245:3000
+    volumes:
+      - /var/persistent/grafana:/var/lib/influxdb
+
+- name: setup submission of climate data

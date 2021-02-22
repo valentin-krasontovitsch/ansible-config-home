@@ -7,6 +7,8 @@ ExecStart=/usr/local/bin/{{ binary | basename }}
 Restart=on-failure
 User=root
 RestartSec=5
+Environment="PLAYER=/usr/bin/mpg321"
+Environment="PLAYER_OPTIONS=--verbose"
 
 [Install]
 WantedBy=multi-user.target
