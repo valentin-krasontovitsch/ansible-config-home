@@ -44,6 +44,13 @@
     dest: /etc/systemd/system/radio-web-api.service
   register: service_unit_file
 
+- name: Make sure audio files are in place
+  copy:
+    directory_mode: 0755
+    mode: 0644
+    src: audio
+    dest: /var
+
 - name: enable and start web service
   systemd:
     name: radio-web-api

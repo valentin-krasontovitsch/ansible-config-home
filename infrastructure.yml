@@ -1,6 +1,6 @@
 ---
 - hosts: all:!laptops
-  remote_user: pi
+  # remote_user: pi
   roles:
     - { role: prelim-setup }
   tags: prelim-setup
@@ -51,8 +51,7 @@
 # TODO deploy radio front-end
 # TODO openvpn O_O
 # TODO setup fund prices tracking
-# TODO setup transmission-gtk to run in docker container, expose in
-# traefik
+# TODO setup transmission-gtk, expose in traefik
 # - hosts: climate
 #   tasks:
 #     - name: enable i2c part 1

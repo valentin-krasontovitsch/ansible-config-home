@@ -3,7 +3,7 @@
   git:
     dest: "{{ project_dest_dir }}"
     repo: https://gitlab.com/v.krasontov/radio-control.git
-    version: develop
+    version: update
   register: checkout_project
   delegate_to: localhost
 
@@ -11,7 +11,7 @@
   shell:
     executable: /usr/bin/fish
     chdir: "{{ project_dest_dir }}"
-    cmd: npm install && npm run build
+    cmd: npm install --from-lockfile && npm run build
   delegate_to: localhost
   when: checkout_project.changed
 

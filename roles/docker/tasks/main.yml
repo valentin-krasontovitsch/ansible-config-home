@@ -10,9 +10,17 @@
 
 - name: setup repo
   block:
+    - name: make sure keys directory exists
+      file:
+        path: "{{ keys_dir }}"
+        state: directory
     - name: add signing key
-      apt_key:
-        url: https://download.docker.com/linux/{{ ansible_lsb.id | lower }}/gpg
+      shell:
+        cmd: >
+          curl -fsSl https://download.docker.com/linux/{{ ansible_lsb.id | lower }}/gpg |
+          gpg --dearmor -o {{ keys_dir }}/docker.gpg
+        creates: "{{ keys_dir }}/docker.gpg"
+        executable: /bin/bash
     - name: get architecture
       shell:
         cmd: dpkg --print-architecture
@@ -23,7 +31,7 @@
         path: /etc/apt/sources.list.d/docker.list
         create: yes
         line: >-
-          deb [arch={{ arch.stdout }}]
+          deb [arch={{ arch.stdout }} signed-by=/etc/apt/keyrings/docker.gpg]
           https://download.docker.com/linux/{{ ansible_lsb.id | lower }}
           {{ ansible_lsb.codename }} stable
 

@@ -3,7 +3,7 @@
   git:
     dest: "{{ binaries_dest_folder }}"
     repo: https://github.com/valentin-krasontovitsch/blue-radio-shell.git
-    version: simplify
+    version: main
   register: checkout_binaries
   delegate_to: localhost
 

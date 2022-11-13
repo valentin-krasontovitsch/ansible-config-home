@@ -41,7 +41,7 @@
     state: absent
 
 - name: Install omf
-  become: item.name
+  become_user: "{{ item.name }}"
   shell:
     executable: /usr/bin/fish
     cmd: |
@@ -57,7 +57,7 @@
   tags: omf
 
 - name: Choose theme
-  become: item.name
+  become_user: "{{ item.name }}"
   shell:
     executable: /usr/bin/fish
     cmd: omf install red-snapper

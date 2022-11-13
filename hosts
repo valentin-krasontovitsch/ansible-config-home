@@ -1,24 +1,25 @@
 [laptops]
 val-laptop ansible_connection=local
+val-thinkbook ansible_connection=local
 
 [pies]
-radio-alarm # raspberry pi zero w
-home-manager # raspberry pi 3b+
+radio-alarm.local # raspberry pi zero w
+home-manager.local # raspberry pi 3b+
 
 [headless_pies]
-radio-alarm
-home-manager
+radio-alarm.local
+home-manager.local
 
 [dmz]
-home-manager
+home-manager.local
 
 [radio]
-radio-alarm
+radio-alarm.local
 
 [climate_sensor]
 
 [pie_with_red_led]
-home-manager
+home-manager.local
 
 [dns_server]
-home-manager
+home-manager.local
